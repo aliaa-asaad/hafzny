@@ -8,7 +8,8 @@ abstract class Routes {
   static const String otp = "/otp";
   static const String home = "/home";
   static const String profile = "/profile";
-  static const String editProfile = "/editProfile";
+  static const String editProfile = "/edit_profile";
+  static const String sessionsDetails = "/sessions_details";
   
 
   

@@ -38,7 +38,7 @@ class CustomButton extends StatelessWidget {
                             vertical: 8.r, horizontal: 32.r), */
           decoration: BoxDecoration(
               color: background ?? Theme.of(context).colorScheme.primary,
-              borderRadius: BorderRadius.circular(8.r)
+              borderRadius: BorderRadius.circular(4.r)
 
               /* shape: state is RegisterLoading
                               ? BoxShape.circle

@@ -17,6 +17,7 @@ class CustomFormField extends StatefulWidget {
   final Widget? iconWidget;
   final Color? hintColor;
   final String labelText;
+  final bool isSearch;
   const CustomFormField({
     super.key,
     required this.hintText,
@@ -30,6 +31,7 @@ class CustomFormField extends StatefulWidget {
     this.iconWidget,
     this.hintColor,
     this.labelText = '',
+    this.isSearch = false,
   });
 
   @override
@@ -43,7 +45,11 @@ class _CustomFormFieldState extends State<CustomFormField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(widget.labelText,style: TextStyleHelper.body15.copyWith(fontWeight: FontWeight.bold),),
+        widget.isSearch?const SizedBox():
+        Text(
+          widget.labelText,
+          style: TextStyleHelper.body15.copyWith(fontWeight: FontWeight.bold),
+        ),
         SizedBox(
           height: MediaQueryHelper.height * .01,
         ),
@@ -65,40 +71,57 @@ class _CustomFormFieldState extends State<CustomFormField> {
           ,
           decoration: InputDecoration(
             errorStyle: TextStyleHelper.caption11,
-            fillColor: widget.fillColor ?? Color(0xff545F71).withOpacity(.02),
+            fillColor: widget.fillColor ??
+                Theme.of(context).colorScheme.background.withOpacity(.02),
             filled: true,
-            suffixIcon: widget.isAuth
-                ? widget.isPassword
-                    ? IconButton(
-                        onPressed: () {
-                          setState(() {
-                            passwordVisible = !passwordVisible;
-                          });
-                        },
-                        icon: passwordVisible
-                            ? SvgPicture.asset(
-                                ImagesHelper.invisiblePassword,
-                                height: MediaQueryHelper.height * .03,
-                              )
-                            : SvgPicture.asset(
-                                ImagesHelper.visiblePassword,
-                                height: MediaQueryHelper.height * .03,
-                              ),
-                      )
-                    : const SizedBox()
-                : Padding(
-                    padding: EdgeInsets.all(12.0.r),
-                    child: widget.iconWidget,
-                  ),
-            prefixIcon: widget.isAuth
+            suffixIcon: widget.isSearch
+                ? Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: SvgPicture.asset(
+                      ImagesHelper.filterIcon,
+                      //  height: MediaQueryHelper.height * .03,
+                    ),
+                  )
+                : widget.isAuth
+                    ? widget.isPassword
+                        ? IconButton(
+                            onPressed: () {
+                              setState(() {
+                                passwordVisible = !passwordVisible;
+                              });
+                            },
+                            icon: passwordVisible
+                                ? SvgPicture.asset(
+                                    ImagesHelper.invisiblePassword,
+                                    height: MediaQueryHelper.height * .03,
+                                  )
+                                : SvgPicture.asset(
+                                    ImagesHelper.visiblePassword,
+                                    height: MediaQueryHelper.height * .03,
+                                  ),
+                          )
+                        : const SizedBox()
+                    : Padding(
+                        padding: EdgeInsets.all(12.0.r),
+                        child: widget.iconWidget,
+                      ),
+            prefixIcon: widget.isSearch
                 ? Padding(
                     padding: EdgeInsets.all(12.0.r),
                     child: SvgPicture.asset(
-                      widget.icon,
-                      height: MediaQueryHelper.height * .02,
+                      ImagesHelper.searchIcon,
+                     // height: MediaQueryHelper.height * .02,
                     ),
                   )
-                : null,
+                : widget.isAuth
+                    ? Padding(
+                        padding: EdgeInsets.all(12.0.r),
+                        child: SvgPicture.asset(
+                          widget.icon,
+                          height: MediaQueryHelper.height * .02,
+                        ),
+                      )
+                    : null,
             hintStyle: TextStyleHelper.button13.copyWith(
                 color: widget.hintColor ?? Color(0xff50617D).withOpacity(.5),
                 fontWeight: FontWeight.normal),

@@ -7,6 +7,7 @@ class ThemeHelper {
     buttonTheme: const ButtonThemeData(
       buttonColor: Color(0xff981A1E),
     ),
+    
     scaffoldBackgroundColor: Colors.white,
     fontFamily: 'Cairo',
    /*  textTheme: TextTheme(
@@ -38,9 +39,9 @@ class ThemeHelper {
     */ colorScheme: const ColorScheme.light(
       primary: Color(0xff017457),
       secondary: Color(0xffD9AC6B),
-      background: Color(0xff69A0C7),
+      background: Color(0xff545F71),
       brightness: Brightness.light,
-      primaryContainer: Color(0xff174459),
+      primaryContainer: Color(0xff192C4A),
       secondaryContainer: Color(0xfff9f2d5),
     ),
   );

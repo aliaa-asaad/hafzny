@@ -1,12 +1,13 @@
+import 'package:flutter/material.dart';
 import 'package:hafzny/features/auth/forget_password/presentation/screens/forget_password_screen.dart';
 import 'package:hafzny/features/auth/login/presentation/screens/login_screen.dart';
 import 'package:hafzny/features/auth/otp/presentation/screens/otp_screen.dart';
 import 'package:hafzny/features/auth/register/presentation/screens/sign_up_screen.dart';
-import 'package:hafzny/features/home/presentation/screens/home_screen.dart';
+import 'package:hafzny/features/home/presentation/screens/student_home_screen.dart';
 import 'package:hafzny/features/on_boarding/view/screens/on_boarding_screen.dart';
+import 'package:hafzny/features/sessions/presentation/screens/sessions_details_screen.dart';
 import 'package:hafzny/features/splash/view/splash_screen.dart';
 import 'package:hafzny/routing/routes.dart';
-import 'package:flutter/material.dart';
 
 class AppRoutes {
   static final GlobalKey<NavigatorState> navigatorState =
@@ -32,10 +33,11 @@ class AppRoutes {
       case Routes.forgetPassword:
         return AppRoutes.aniamtedNavigation(
             screen: const ForgetPasswordScreen());
-            
 
       case Routes.home:
-        return AppRoutes.aniamtedNavigation(screen: const HomeScreen());
+        return AppRoutes.aniamtedNavigation(screen: const StudentHomeScreen());
+        case Routes.sessionsDetails:
+        return AppRoutes.aniamtedNavigation(screen: const SessionsDetailsScreen());
 
       default:
         return AppRoutes.aniamtedNavigation(

@@ -7,6 +7,7 @@ import 'package:hafzny/routing/navigator.dart';
 import 'package:hafzny/routing/routes.dart';
 import 'package:hafzny/utilities/images.dart';
 import 'package:hafzny/utilities/media_quary.dart';
+import 'package:lottie/lottie.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -28,8 +29,8 @@ class _SplashScreenState extends State<SplashScreen>   with SingleTickerProvider
 // function that controls animation of logo
   void splashAnimation() {
     controller =
-        AnimationController(vsync: this, duration: const Duration(seconds: 2))
-          ..forward();
+        AnimationController(vsync: this, duration: const Duration(seconds: 3))
+          ..forward()..repeat();
     animation = CurvedAnimation(parent: controller, curve: Curves.linear);
   }
 
@@ -73,17 +74,19 @@ class _SplashScreenState extends State<SplashScreen>   with SingleTickerProvider
         builder: (context, snapshot) {
           return Scaffold(
           //  backgroundColor: Colors.green,
-            body: FadeTransition(
-              opacity: animation,
-              child: Center(
-                child: Image.asset(
+            body:Center(
+                child: Lottie.asset(
                   ImagesHelper.logo,
                //   fit: BoxFit.contain,color: Colors.white,
                   height: MediaQueryHelper.height * .6,
-                  width: MediaQueryHelper.width * .8,
+                  width: MediaQueryHelper.width * .8,animate: true,
+                  controller: controller
                 ),
               ),
-            ),
+            /*  FadeTransition(
+              opacity: animation,
+              child: 
+            ), */
           );
         });
     /* }); */

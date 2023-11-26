@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hafzny/app_widgets/custom_button.dart';
-import 'package:hafzny/features/on_boarding/view/widgets/custom_dots.dart';
-import 'package:hafzny/features/on_boarding/view/widgets/on_boarding_class.dart';
+import 'package:hafzny/app_widgets/custom_dots.dart';
+import 'package:hafzny/features/on_boarding/view/widgets/on_boarding_button.dart';
+import 'package:hafzny/features/on_boarding/view/widgets/on_boarding_model.dart';
 import 'package:hafzny/utilities/images.dart';
 import 'package:hafzny/utilities/media_quary.dart';
 import 'package:hafzny/utilities/text_style_helper.dart';
@@ -17,18 +18,18 @@ class OnBoardingScreen extends StatefulWidget {
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
   int _currentPage = 0;
   int _currentContent = 0;
-  List<OnBoarding> content = [
-    OnBoarding(
+  List<OnBoardingModel> content = [
+    OnBoardingModel(
         title: 'حفظنى معك فى تعلم القرأن',
         description:
             'هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات في الصفحة التي يقرأها',
         image: ImagesHelper.onBoarding1),
-    OnBoarding(
+    OnBoardingModel(
         title: 'اكثر من معلم ومعلمة',
         description:
             'هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات في الصفحة التي يقرأها',
         image: ImagesHelper.onBoarding2),
-    OnBoarding(
+    OnBoardingModel(
         title: 'مختلف الاعمار والمستويات',
         description:
             'هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات في الصفحة التي يقرأها',
@@ -51,7 +52,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   child: Column(
                     children: [
                       Image.asset(
-                        content[_currentContent].image,
+                        content[_currentContent].image!,
                         height: MediaQueryHelper.height * .28,
                         //color: Colors.green,
                       ),
@@ -79,6 +80,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   children: List.generate(
                     content.length,
                     (index) => CustomDots(
+                     // height: .004,
+                      width: .05,
                       color: _currentContent == index
                           ? Theme.of(context).colorScheme.primary
                           : const Color(0xff50617D).withOpacity(.1),
@@ -89,29 +92,29 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 _currentContent == content.length - 1
                     ? AnimatedOpacity(
                         duration: const Duration(seconds: 2),
-                        opacity: _currentContent ==_currentContent? 1.0 : 0.0,
-                      child: Column(
+                        opacity: _currentContent == _currentContent ? 1.0 : 0.0,
+                        child: Column(
                           children: [
                             CustomButton(
                               onPressed: () {},
                               text: 'الدخول كطالب',
-                            
-                          
                             ),
                             CustomButton(
                               onPressed: () {},
                               text: 'الدخول كمعلم',
-                            textColor: Colors.black,
-                            background: Theme.of(context).colorScheme.secondary,
-                          
+                              textColor: Colors.black,
+                              background:
+                                  Theme.of(context).colorScheme.secondary,
                             ),
                           ],
                         ),
-                    )
+                      )
                     : Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           OnBoardingButton(
+                            width: .3,
+                            height: .053,
                             onPressed: () {
                               if (_currentPage == content.length - 1) {
                                 // Handle the action when reaching the last page
@@ -134,6 +137,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                             textColor: Colors.white,
                           ),
                           OnBoardingButton(
+                            width: .3,
+                            height: .053,
                             onPressed: () {
                               if (_currentPage == 0) {
                                 // Handle the action when reaching the last page
@@ -163,42 +168,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 SizedBox(height: MediaQueryHelper.height * .02),
               ]),
         ),
-      ),
-    );
-  }
-}
-
-class OnBoardingButton extends StatelessWidget {
-  final String title;
-  final Color color;
-  final Color textColor;
-  final Function() onPressed;
-  const OnBoardingButton({
-    super.key,
-    required this.title,
-    required this.color,
-    required this.textColor,
-    required this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        elevation: 0,
-        backgroundColor: color,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(4.r),
-        ),
-        minimumSize: Size(
-          MediaQueryHelper.width * .3,
-          MediaQueryHelper.height * .053,
-        ),
-      ),
-      child: Text(
-        title,
-        style: TextStyleHelper.button13.copyWith(color: textColor),
       ),
     );
   }

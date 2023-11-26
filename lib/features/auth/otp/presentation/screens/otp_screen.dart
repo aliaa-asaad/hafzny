@@ -28,7 +28,7 @@ class _OTPScreenState extends State<OTPScreen> with Validations {
     // var bloc = BlocProvider.of<AuthBloc>(context);
     return Scaffold(
       appBar: AppBar(
-        leading: const CustomArrowBack(),
+        leading: const CustomArrowBack(isAuth: true),
         leadingWidth: MediaQueryHelper.width * .17,
         toolbarHeight: MediaQueryHelper.height * .09,
         backgroundColor: Colors.transparent,
