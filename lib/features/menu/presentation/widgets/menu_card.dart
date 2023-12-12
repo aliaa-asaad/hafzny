@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hafzny/routing/navigator.dart';
 import 'package:hafzny/utilities/text_style_helper.dart';
 
 class MenuCard extends StatelessWidget {
@@ -20,9 +21,11 @@ class MenuCard extends StatelessWidget {
       ),
       child: Column(
         children: List.generate(
-          2,
+          content.length,
           (index) => InkWell(
-            onTap: () {},
+            onTap: () {
+              AppRoutes.pushNamedNavigator(routeName: content[index]['route']);
+            },
             child: Row(
               children: [
                 SvgPicture.asset(content[index]['icon']),

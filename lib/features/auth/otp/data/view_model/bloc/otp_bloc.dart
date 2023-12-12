@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hafzny/core/user_model.dart';
 import 'package:hafzny/core/validations.dart';
+import 'package:hafzny/features/auth/forget_password/data/view_model/bloc/forget_password_bloc.dart';
+import 'package:hafzny/features/auth/login/data/view_model/bloc/login_bloc.dart';
 import 'package:hafzny/features/auth/otp/data/model/otp_repo.dart';
+import 'package:hafzny/features/auth/register/data/view_model/bloc/sign_up_bloc.dart';
 import 'package:hafzny/handlers/shared_handler.dart';
 import 'package:hafzny/routing/navigator.dart';
 import 'package:hafzny/routing/routes.dart';
@@ -25,14 +28,22 @@ class OTPBloc extends Bloc<OTPEvent, OTPState> with Validations {
       BlocProvider.of(AppRoutes.navigatorState.currentContext!);
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 /////////////////models////////////////
- // late OTPModel _emailVerifiactionModel;
+
   final OTPRepo _otpRepo = OTPRepo();
-  /* UserModel userModel = LoginBloc.instance.userModel.authToken == null
-      ? RegisterBloc.instance.userModel
-      : LoginBloc.instance.userModel;
-  DriverModel driverModel = LoginBloc.instance.driverModel.authToken == null
-      ? RegisterBloc.instance.driverModel
-      : LoginBloc.instance.driverModel; */
+  StudentModel
+      studentModel = /*  ForgetPasswordBloc.instance.value.isEmpty
+      ?LoginBloc.instance.studentModel.data!.iId == null
+          ? SignUpBloc.instance.studentModel
+          : LoginBloc.instance.studentModel 
+      : */
+      StudentModel();
+  TeacherModel
+      teacherModel = /*  ForgetPasswordBloc.instance.value.isEmpty
+      ?LoginBloc.instance.teacherModel.data!.iId == null
+          ? SignUpBloc.instance.teacherModel
+          : LoginBloc.instance.teacherModel 
+      :  */
+      TeacherModel();
 ////////////////////variables/////////////
   TextEditingController codeController1 = TextEditingController();
   String codeError1 = '';
@@ -43,7 +54,7 @@ class OTPBloc extends Bloc<OTPEvent, OTPState> with Validations {
   TextEditingController codeController4 = TextEditingController();
   String codeError4 = '';
   ///////////////////validation////////////////
-  bool _validateCode() {
+/*   bool _validateCode() {
     codeError1 = isValidCodeBloc(codeController1.text);
     codeError2 = isValidCodeBloc(codeController2.text);
     codeError3 = isValidCodeBloc(codeController3.text);
@@ -52,86 +63,79 @@ class OTPBloc extends Bloc<OTPEvent, OTPState> with Validations {
         codeError2.isEmpty &&
         codeError3.isEmpty &&
         codeError4.isEmpty;
-  }
+  } */
 
   /////////////////////methods///////////////////
   _verifyCode(OTPEvent events, Emitter emit) async {
     emit(OTPLoading());
     try {
-    /*   Map<String, dynamic> data = {
-        'phoneNumber': LoginBloc.instance.phoneNumberController.text.isNotEmpty
-            ? LoginBloc.instance.phoneNumberController.text
-            : RegisterBloc.instance.phoneNumberController.text,
-        'otp': [
+      Map<String, dynamic> data = {
+        'phoneNumber': ForgetPasswordBloc.instance.value.isNotEmpty
+            ? ForgetPasswordBloc.instance.phoneController.text
+            : LoginBloc.instance.phoneNumberController.text.isNotEmpty
+                ? LoginBloc.instance.phoneNumberController.text
+                : SignUpBloc.instance.phoneNumberController.text,
+        'code': int.parse([
           codeController1.text,
           codeController2.text,
           codeController3.text,
           codeController4.text,
-        ].join(),
-        'type': SharedHandler.instance!
-            .getData(key: SharedKeys().userType, valueType: ValueType.int)
+        ].join()),
+        /*  'type': SharedHandler.instance!
+            .getData(key: SharedKeys().userType, valueType: ValueType.int) */
       };
-      log(data.toString());
-      _emailVerifiactionModel = await _otpRepo.otpRequest(data);
+      log('data :${data.toString()}');
+      if (SharedHandler.instance!
+              .getData(key: SharedKeys().userType, valueType: ValueType.int) ==
+          0) {
+        studentModel = await _otpRepo.otpRequest(data);
+
+        SharedHandler.instance!
+            .setData(SharedKeys().student, value: studentModel.toJson());
+        SharedHandler.instance!
+            .setData(SharedKeys().token, value: studentModel.token);
+        log('student otp token: ${studentModel.token}');
+        log('studentModel otp: ${studentModel.toString()}');
+      } else {
+        log('data to repo : ${data.toString()}');
+        teacherModel = await _otpRepo.otpRequest(data);
+        SharedHandler.instance!
+            .setData(SharedKeys().teacher, value: teacherModel.toJson());
+        SharedHandler.instance!
+            .setData(SharedKeys().token, value: teacherModel.token);
+        log('teacher otp token: ${teacherModel.token}');
+        log('teacherModel register: ${teacherModel.toString()}');
+      }
+      log('success');
+
       log('verified');
-      log('isForgetPassword : ${AuthBloc.instance.isForgetPassword}');
-      if (AuthBloc.instance.isForgetPassword == false) {
-        if (SharedHandler.instance!.getData(
-                key: SharedKeys().userType, valueType: ValueType.int) ==
-            0) {
-          log('client model: ${userModel.toJson()}');
-          if (LoginBloc.instance.userModel.authToken == null) {
-            log('register userModel: ${RegisterBloc.instance.userModel.toString()}');
-            log('register client model: ${userModel.client!.toJson()}');
-          } else {
-            log('login userModel: ${LoginBloc.instance.userModel.toString()}');
-            log('login client model: ${userModel.client!.toJson()}');
-          }
-
-          await SharedHandler.instance!
-              .setData(SharedKeys().user, value: userModel.client!.toJson());
-          await SharedHandler.instance!
-              .setData(SharedKeys().token, value: userModel.authToken);
-        } else {
-          log('driver model: ${driverModel.toJson()}');
-          /* log('register userModel: ${RegisterBloc.instance.driverModel.toString()}');
-          log('client model: ${driverModel.driver!.toJson()}'); */
-          if (LoginBloc.instance.driverModel.authToken == null) {
-            log('register userModel: ${RegisterBloc.instance.driverModel.toString()}');
-            log('register client model: ${driverModel.client!.toJson()}');
-          } else {
-            log('login userModel: ${LoginBloc.instance.driverModel.toString()}');
-            log('login driver model: ${driverModel.client!.toJson()}');
-          }
-          await SharedHandler.instance!.setData(SharedKeys().driver,
-              value: driverModel.client!.toJson());
-          await SharedHandler.instance!
-              .setData(SharedKeys().token, value: driverModel.authToken);
-        }
-
+      log('isForgetPassword : ${LoginBloc.instance.isForgetPassword}');
+      if (LoginBloc.instance.isForgetPassword == false) {
         await SharedHandler.instance!
             .setData(SharedKeys().isLogin, value: true);
-        log('user model token: ${userModel.authToken}');
-        log('driver model token: ${driverModel.authToken}');
+        /* log('user model token: ${.authToken}');
+        log('driver model token: ${teacherModel.authToken}'); */
         await SharedHandler.instance!
             .setData(SharedKeys().isNotFirstTime, value: true);
       }
 
-      if (AuthBloc.instance.isForgetPassword) {
+      if (LoginBloc.instance.isForgetPassword) {
         AppRoutes.pushNamedNavigator(routeName: Routes.newPassword);
       } else {
         if (SharedHandler.instance!.getData(
                 key: SharedKeys().userType, valueType: ValueType.int) ==
             0) {
-          AppRoutes.pushNamedNavigator(
-              routeName: Routes.clientNavBar, replacementAll: true);
-          RegisterBloc.instance.clearData();
-        } else {
-          AppRoutes.pushNamedNavigator(
-              routeName: Routes.driverNavBar, replacementAll: true);
-          RegisterBloc.instance.clearData();
+          if (studentModel.data!.isVerified == true) {
+            AppRoutes.pushNamedNavigator(
+                routeName: Routes.navBar, replacementAll: true);
+          }
+          else{
+            AppRoutes.pushNamedNavigator(
+                routeName: Routes.studentData, replacementAll: true);
+          }
         }
-      } */
+        SignUpBloc.instance.clearData();
+      }
 
       emit(OTPLoaded());
     } catch (e) {

@@ -8,7 +8,7 @@ class CustomButton extends StatelessWidget {
   final String? text;
   final Color? background;
   final Color? textColor;
-
+  final bool isOpacity;
   final Widget? child;
   final double? width;
   const CustomButton(
@@ -18,7 +18,8 @@ class CustomButton extends StatelessWidget {
       this.background,
       this.textColor,
       this.child,
-      this.width});
+      this.width,
+      this.isOpacity = false});
 
   @override
   Widget build(BuildContext context) {
@@ -37,13 +38,14 @@ class CustomButton extends StatelessWidget {
           /* padding: EdgeInsets.symmetric(
                             vertical: 8.r, horizontal: 32.r), */
           decoration: BoxDecoration(
-              color: background ?? Theme.of(context).colorScheme.primary,
-              borderRadius: BorderRadius.circular(4.r)
-
-              /* shape: state is RegisterLoading
+            color: background ?? Theme.of(context).colorScheme.primary,
+            borderRadius: BorderRadius.circular(4.r),
+            border: Border.all(
+                color: Theme.of(context).colorScheme.background.withOpacity(.1), width: isOpacity ? 1 : 0),
+            /* shape: state is RegisterLoading
                               ? BoxShape.circle
                               : null, */
-              ),
+          ),
           duration: const Duration(seconds: 1),
           child: child ??
               Text(text!,

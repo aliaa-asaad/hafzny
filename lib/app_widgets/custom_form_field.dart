@@ -15,9 +15,13 @@ class CustomFormField extends StatefulWidget {
   final String? Function(String?)? validator;
   final TextEditingController controller;
   final Widget? iconWidget;
+  final Widget? customSuffixIconButton;
+  final Widget? customPreffixIconButton;
   final Color? hintColor;
+  final bool isReadOnly;
+  final bool isLabeled;
   final String labelText;
-  final bool isSearch;
+  final bool isWidget;
   const CustomFormField({
     super.key,
     required this.hintText,
@@ -31,7 +35,11 @@ class CustomFormField extends StatefulWidget {
     this.iconWidget,
     this.hintColor,
     this.labelText = '',
-    this.isSearch = false,
+    this.isWidget = false,
+    this.customSuffixIconButton,
+    this.customPreffixIconButton,
+    this.isLabeled = true,
+    this.isReadOnly = false,
   });
 
   @override
@@ -45,15 +53,16 @@ class _CustomFormFieldState extends State<CustomFormField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        widget.isSearch?const SizedBox():
-        Text(
-          widget.labelText,
-          style: TextStyleHelper.body15.copyWith(fontWeight: FontWeight.bold),
-        ),
+        widget.isLabeled
+            ? Text(widget.labelText,
+                style: TextStyleHelper.body15
+                    .copyWith(fontWeight: FontWeight.bold))
+            : const SizedBox(),
         SizedBox(
           height: MediaQueryHelper.height * .01,
         ),
         TextFormField(
+          readOnly: widget.isReadOnly ? true : false,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: widget.validator,
           keyboardType: widget.keyboardType,
@@ -70,18 +79,14 @@ class _CustomFormFieldState extends State<CustomFormField> {
           ) */
           ,
           decoration: InputDecoration(
-            errorStyle: TextStyleHelper.caption11,
+            //check this
+            //  focusedBorder: InputBorder.none,
+            //  errorStyle: TextStyleHelper.caption11,
             fillColor: widget.fillColor ??
                 Theme.of(context).colorScheme.background.withOpacity(.02),
             filled: true,
-            suffixIcon: widget.isSearch
-                ? Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: SvgPicture.asset(
-                      ImagesHelper.filterIcon,
-                      //  height: MediaQueryHelper.height * .03,
-                    ),
-                  )
+            suffixIcon: widget.isWidget
+                ? widget.customSuffixIconButton
                 : widget.isAuth
                     ? widget.isPassword
                         ? IconButton(
@@ -105,14 +110,8 @@ class _CustomFormFieldState extends State<CustomFormField> {
                         padding: EdgeInsets.all(12.0.r),
                         child: widget.iconWidget,
                       ),
-            prefixIcon: widget.isSearch
-                ? Padding(
-                    padding: EdgeInsets.all(12.0.r),
-                    child: SvgPicture.asset(
-                      ImagesHelper.searchIcon,
-                     // height: MediaQueryHelper.height * .02,
-                    ),
-                  )
+            prefixIcon: widget.isWidget
+                ? widget.customPreffixIconButton
                 : widget.isAuth
                     ? Padding(
                         padding: EdgeInsets.all(12.0.r),
@@ -123,7 +122,8 @@ class _CustomFormFieldState extends State<CustomFormField> {
                       )
                     : null,
             hintStyle: TextStyleHelper.button13.copyWith(
-                color: widget.hintColor ?? Color(0xff50617D).withOpacity(.5),
+                color:
+                    widget.hintColor ?? const Color(0xff50617D).withOpacity(.5),
                 fontWeight: FontWeight.normal),
             hintText: widget.hintText,
             border: OutlineInputBorder(
@@ -138,7 +138,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
                 style: BorderStyle.solid,
-                color: Color(0xff545F71).withOpacity(.1),
+                color: const Color(0xff545F71).withOpacity(.1),
               ),
               borderRadius: BorderRadius.all(
                 Radius.circular(8.0.r),

@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +8,7 @@ import 'package:hafzny/app_widgets/custom_button.dart';
 import 'package:hafzny/app_widgets/custom_form_field.dart';
 import 'package:hafzny/core/validations.dart';
 import 'package:hafzny/features/auth/register/data/view_model/bloc/sign_up_bloc.dart';
+import 'package:hafzny/handlers/shared_handler.dart';
 import 'package:hafzny/routing/navigator.dart';
 import 'package:hafzny/routing/routes.dart';
 import 'package:hafzny/utilities/images.dart';
@@ -27,14 +27,15 @@ class _SignUpScreenState extends State<SignUpScreen> with Validations {
 
   @override
   Widget build(BuildContext context) {
+    //  SharedHandler.instance!.setData(SharedKeys().userType, value: 0);
     //var bloc = BlocProvider.of<AuthBloc>(context);
     return Scaffold(
-       appBar: AppBar(
+      appBar: AppBar(
         leading: const CustomArrowBack(isAuth: true),
         leadingWidth: MediaQueryHelper.width * .17,
         toolbarHeight: MediaQueryHelper.height * .09,
         backgroundColor: Colors.transparent,
-        title: const Text('تفعيل رقم الجوال'),
+        title: const Text('انشاء حساب جديد'),
         iconTheme:
             IconTheme.of(context).copyWith(color: Colors.black, size: 17.r),
         elevation: 0.0,
@@ -42,7 +43,8 @@ class _SignUpScreenState extends State<SignUpScreen> with Validations {
             color: Colors.black,
             fontFamily: 'Cairo',
             fontWeight: FontWeight.normal),
-      ), body: SafeArea(
+      ),
+      body: SafeArea(
           child: Form(
         key: SignUpBloc.instance.formKey,
         autovalidateMode: AutovalidateMode.always,
@@ -61,6 +63,7 @@ class _SignUpScreenState extends State<SignUpScreen> with Validations {
               child: BlocBuilder<SignUpBloc, SignUpState>(
                 builder: (context, state) {
                   return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
                         height: MediaQueryHelper.height * .02,
@@ -97,6 +100,45 @@ class _SignUpScreenState extends State<SignUpScreen> with Validations {
                       SizedBox(
                         height: MediaQueryHelper.height * .02,
                       ),
+                      Text(
+                        'النوع',
+                        style: TextStyleHelper.body15
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      DropdownButtonFormField(
+                        icon: const Icon(Icons.keyboard_arrow_down),
+                        decoration: const InputDecoration(
+                          isDense: true,
+                          border: OutlineInputBorder(),
+                        ),
+                        hint: Text(SignUpBloc.instance.genderValue),
+                        items: /* items */
+                            SignUpBloc.instance.genderList.map((value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (gender) {
+                          SignUpBloc.instance.updateGender(gender!);
+                        },
+                      ),
+                      SizedBox(
+                        height: MediaQueryHelper.height * .02,
+                      ),
+                      SharedHandler.instance!.getData(
+                                  key: SharedKeys().userType,
+                                  valueType: ValueType.int) ==
+                              1
+                          ? CustomFormField(
+                              labelText: 'العمر',
+                              validator: isValidAge,
+                              icon: ImagesHelper.ageGroupIcon,
+                              hintText: 'قم بادخال عمرك',
+                              keyboardType: TextInputType.number,
+                              controller: SignUpBloc.instance.ageController,
+                            )
+                          : const SizedBox(),
                       CustomFormField(
                         labelText: 'كلمة المرور',
                         validator: isValidPassword,
@@ -130,9 +172,11 @@ class _SignUpScreenState extends State<SignUpScreen> with Validations {
                         height: MediaQueryHelper.height * .02,
                       ),
                       state is SignUpError
-                          ? Text(
-                              'هناك خطا في البيانات',
-                              style: TextStyleHelper.button16,
+                          ? Center(
+                              child: Text(
+                                'هناك خطا في البيانات',
+                                style: TextStyleHelper.button16,
+                              ),
                             )
                           : const SizedBox(),
                       CustomButton(
@@ -140,15 +184,16 @@ class _SignUpScreenState extends State<SignUpScreen> with Validations {
                             ? MediaQueryHelper.width * .13
                             : MediaQueryHelper.width,
                         onPressed: () {
+                          log('${SharedHandler.instance!.getData(key: SharedKeys().userType, valueType: ValueType.int)}');
                           if (SignUpBloc.instance.formKey.currentState!
                               .validate()) {
                             // _formKey.currentState!.save();
                             //log(name);
-                            AppRoutes.pushNamedNavigator(routeName: Routes.otp);
+                            SignUpBloc.instance.add(SignUpPost());
+                            
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('تم حفظ البيانات')),
                             );
-                          //  SignUpBloc.instance.add(SignUpPost());
                           } else {
                             log('not valid');
                           }
@@ -171,20 +216,12 @@ class _SignUpScreenState extends State<SignUpScreen> with Validations {
                             .colorScheme
                             .secondary
                             .withOpacity(.1),
-                        width: state is SignUpLoading
-                            ? MediaQueryHelper.width * .13
-                            : MediaQueryHelper.width,
-                        child: state is SignUpLoading
-                            ? const CircularProgressIndicator(
-                                color: Colors.white,
-                              )
-                            : Text(
-                                'لدي حساب بالفعل',
-                                style: TextStyleHelper.button16.copyWith(
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                ),
-                              ),
+                        child: Text(
+                          'لدي حساب بالفعل',
+                          style: TextStyleHelper.button16.copyWith(
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                        ),
                         onPressed: () {
                           AppRoutes.pushNamedNavigator(routeName: Routes.login);
                           /*  if (LoginBloc.instance.formKey.currentState!

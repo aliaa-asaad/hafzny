@@ -1,23 +1,32 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hafzny/app_widgets/custom_button.dart';
 import 'package:hafzny/app_widgets/custom_dots.dart';
 import 'package:hafzny/features/on_boarding/view/widgets/on_boarding_button.dart';
 import 'package:hafzny/features/on_boarding/view/widgets/on_boarding_model.dart';
+import 'package:hafzny/handlers/shared_handler.dart';
+import 'package:hafzny/routing/navigator.dart';
+import 'package:hafzny/routing/routes.dart';
 import 'package:hafzny/utilities/images.dart';
 import 'package:hafzny/utilities/media_quary.dart';
 import 'package:hafzny/utilities/text_style_helper.dart';
 
 class OnBoardingScreen extends StatefulWidget {
-  const OnBoardingScreen({super.key});
+  int currentPage;
+  OnBoardingScreen({
+    super.key,
+    this.currentPage = 0,
+  });
 
   @override
   State<OnBoardingScreen> createState() => _OnBoardingScreenState();
 }
 
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
-  int _currentPage = 0;
-  int _currentContent = 0;
+  // int _currentPage = 0;
+
   List<OnBoardingModel> content = [
     OnBoardingModel(
         title: 'حفظنى معك فى تعلم القرأن',
@@ -37,6 +46,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   ];
   @override
   Widget build(BuildContext context) {
+    int currentContent = widget.currentPage;
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -45,27 +55,27 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(height: MediaQueryHelper.height * .15),
+                SizedBox(height: MediaQueryHelper.height * .05),
                 AnimatedOpacity(
                   duration: const Duration(seconds: 2),
-                  opacity: _currentPage == _currentContent ? 1.0 : 0.0,
+                  opacity: widget.currentPage == currentContent ? 1.0 : 0.0,
                   child: Column(
                     children: [
                       Image.asset(
-                        content[_currentContent].image!,
+                        content[currentContent].image!,
                         height: MediaQueryHelper.height * .28,
                         //color: Colors.green,
                       ),
-                      SizedBox(height: MediaQueryHelper.height * .08),
+                      SizedBox(height: MediaQueryHelper.height * .05),
                       Text(
-                        content[_currentContent].title,
+                        content[currentContent].title,
                         style: TextStyleHelper.title26.copyWith(
                             color: const Color(0xff192C4A),
                             fontWeight: FontWeight.normal),
                         textAlign: TextAlign.center,
                       ),
                       Text(
-                        content[_currentContent].description,
+                        content[currentContent].description,
                         style: TextStyleHelper.body15.copyWith(
                           color: const Color(0xff545F71),
                         ),
@@ -80,27 +90,39 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   children: List.generate(
                     content.length,
                     (index) => CustomDots(
-                     // height: .004,
+                      // height: .004,
                       width: .05,
-                      color: _currentContent == index
+                      color: currentContent == index
                           ? Theme.of(context).colorScheme.primary
                           : const Color(0xff50617D).withOpacity(.1),
                     ),
                   ),
                 ),
                 const Spacer(),
-                _currentContent == content.length - 1
+                currentContent == content.length - 1
                     ? AnimatedOpacity(
                         duration: const Duration(seconds: 2),
-                        opacity: _currentContent == _currentContent ? 1.0 : 0.0,
+                        opacity: currentContent == currentContent ? 1.0 : 0.0,
                         child: Column(
                           children: [
                             CustomButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                SharedHandler.instance!
+                                    .setData(SharedKeys().userType, value: 0);
+                                log('${SharedHandler.instance!.getData(key: SharedKeys().userType, valueType: ValueType.int)}');
+                                AppRoutes.pushNamedNavigator(
+                                    routeName: Routes.signUp);
+                              },
                               text: 'الدخول كطالب',
                             ),
                             CustomButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                SharedHandler.instance!
+                                    .setData(SharedKeys().userType, value: 1);
+                                log('${SharedHandler.instance!.getData(key: SharedKeys().userType, valueType: ValueType.int)}');
+                                AppRoutes.pushNamedNavigator(
+                                    routeName: Routes.signUp);
+                              },
                               text: 'الدخول كمعلم',
                               textColor: Colors.black,
                               background:
@@ -116,17 +138,17 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                             width: .3,
                             height: .053,
                             onPressed: () {
-                              if (_currentPage == content.length - 1) {
+                              if (widget.currentPage == content.length - 1) {
                                 // Handle the action when reaching the last page
                                 // For example, navigate to the next screen
                                 print("Reached the last page");
                               } else {
                                 setState(() {
-                                  _currentPage++;
+                                  widget.currentPage++;
                                   Future.delayed(
                                       const Duration(milliseconds: 800), () {
                                     setState(() {
-                                      _currentContent = _currentPage;
+                                      currentContent = widget.currentPage;
                                     });
                                   });
                                 });
@@ -140,17 +162,17 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                             width: .3,
                             height: .053,
                             onPressed: () {
-                              if (_currentPage == 0) {
+                              if (widget.currentPage == 0) {
                                 // Handle the action when reaching the last page
                                 // For example, navigate to the next screen
                                 print("Reached the last page");
                               } else {
                                 setState(() {
-                                  _currentPage--;
+                                  widget.currentPage--;
                                   Future.delayed(
                                       const Duration(milliseconds: 800), () {
                                     setState(() {
-                                      _currentContent = _currentPage;
+                                      currentContent = widget.currentPage;
                                     });
                                   });
                                 });

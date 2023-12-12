@@ -9,4 +9,5 @@ final class SignUpLoading extends SignUpState {}
 final class SignUpLoaded extends SignUpState {}
 
 final class SignUpError extends SignUpState {}
+final class SignUpUpdateGender extends SignUpState {}
 

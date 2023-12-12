@@ -8,6 +8,7 @@ import 'package:hafzny/app_widgets/custom_button.dart';
 import 'package:hafzny/app_widgets/custom_form_field.dart';
 import 'package:hafzny/core/validations.dart';
 import 'package:hafzny/features/auth/login/data/view_model/bloc/login_bloc.dart';
+import 'package:hafzny/handlers/shared_handler.dart';
 import 'package:hafzny/routing/navigator.dart';
 import 'package:hafzny/routing/routes.dart';
 import 'package:hafzny/utilities/images.dart';
@@ -22,9 +23,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> with Validations {
-  @override
+  
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       appBar: AppBar(
         leading: const CustomArrowBack(isAuth: true),
@@ -90,8 +92,8 @@ class _LoginScreenState extends State<LoginScreen> with Validations {
                         onPressed: () {
                           AppRoutes.pushNamedNavigator(
                               routeName: Routes.forgetPassword);
-                          /* AuthBloc.instance.isForgetPassword = true;
-                           */
+                          LoginBloc.instance.isForgetPassword = true;
+                          
                         },
                         child: Text(
                           'نسيت كلمة المرور!',
@@ -132,8 +134,8 @@ class _LoginScreenState extends State<LoginScreen> with Validations {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('تم حفظ البيانات')),
                           );
-                          AppRoutes.pushNamedNavigator(routeName: Routes.home);
-                          //LoginBloc.instance.add(LoginPost());
+                        
+                          LoginBloc.instance.add(LoginPost());
                           //BlocProvider.of<NotificationCubit>(context).getPusherBeams();
                         } else {
                           log('not valid');
@@ -148,14 +150,8 @@ class _LoginScreenState extends State<LoginScreen> with Validations {
                           .colorScheme
                           .secondary
                           .withOpacity(.1),
-                      width: state is LoginLoading
-                          ? MediaQueryHelper.width * .13
-                          : MediaQueryHelper.width,
-                      child: state is LoginLoading
-                          ? const CircularProgressIndicator(
-                              color: Colors.white,
-                            )
-                          : Text(
+                      
+                      child:Text(
                               'ليس لديك حساب ؟ انشاء حساب جديد',
                               style: TextStyleHelper.button16.copyWith(
                                 color: Theme.of(context).colorScheme.secondary,

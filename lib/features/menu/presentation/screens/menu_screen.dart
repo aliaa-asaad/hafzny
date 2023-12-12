@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hafzny/app_widgets/custom_app_bar.dart';
 import 'package:hafzny/app_widgets/custom_button.dart';
 import 'package:hafzny/features/menu/presentation/widgets/menu_card.dart';
+import 'package:hafzny/routing/navigator.dart';
+import 'package:hafzny/routing/routes.dart';
 import 'package:hafzny/utilities/images.dart';
 import 'package:hafzny/utilities/text_style_helper.dart';
 
@@ -18,28 +19,34 @@ class MenuScreen extends StatelessWidget {
           padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
-              CustomAppBar(
+              const CustomAppBar(
                 title: 'القائمة',
               ),
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
-              MenuCard(
+              const MenuCard(
                 content: [
                   {
                     'title': 'بيانات الحساب',
-                    'icon': ImagesHelper.profileDetailsIcon
+                    'icon': ImagesHelper.profileDetailsIcon,
+                    'route': Routes.editProfile
+                
                   },
-                  {'title': 'الباقات', 'icon': ImagesHelper.packagesIcon}
+                  {
+                    'title': 'الباقات',
+                    'icon': ImagesHelper.packagesIcon,
+                    'route': Routes.packages
+                  }
                 ],
               ),
-              MenuCard(
+              const MenuCard(
                 content: [
                   {'title': 'القرآن الكريم', 'icon': ImagesHelper.quranIcon},
                   {'title': 'الخطة', 'icon': ImagesHelper.planIcon}
                 ],
               ),
-              MenuCard(
+              const MenuCard(
                 content: [
                   {
                     'title': 'الشروط والاحكام',
@@ -48,18 +55,29 @@ class MenuScreen extends StatelessWidget {
                   {'title': 'الدعم الفني', 'icon': ImagesHelper.callCenterIcon}
                 ],
               ),
-              Spacer(),
+              const Spacer(),
               CustomButton(
-                onPressed: () {},
+                onPressed: () {AppRoutes.pushNamedNavigator(
+                  routeName: Routes.onboarding,
+                  replacement: true,
+                  arguments: 2);},
                 background: Colors.red,
                 child: Row(
                   children: [
-                    SizedBox(width: 20,),
-                    SvgPicture.asset(ImagesHelper.logoutIcon,color: Colors.white,),
-                    SizedBox(width: 20,),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    SvgPicture.asset(
+                      ImagesHelper.logoutIcon,
+                      color: Colors.white,
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
                     Text(
                       'تسجيل الخروج',
-                      style: TextStyleHelper.button16.copyWith(color: Colors.white),
+                      style: TextStyleHelper.button16
+                          .copyWith(color: Colors.white),
                     ),
                   ],
                 ),

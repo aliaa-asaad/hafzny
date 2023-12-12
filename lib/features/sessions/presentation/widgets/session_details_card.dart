@@ -19,28 +19,29 @@ class SessionDetailsCard extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(4)),
       ),
       child: Column(
-          children: List.generate(
-        content.length,
-        (index) => Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                content[index]['title'],
-                style: TextStyleHelper.body15
-                    .copyWith(fontWeight: FontWeight.bold),
-              ),
-              Text(
-                content[index]['subTitle'],
-                style: TextStyleHelper.body15.copyWith(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontWeight: FontWeight.bold),
-              ),
-            ],
+        children: List.generate(
+          content.length,
+          (index) => Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  content[index]['title'],
+                  style: TextStyleHelper.body15
+                      .copyWith(fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  content[index]['subTitle'],
+                  style: TextStyleHelper.body15.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
           ),
         ),
-      )),
+      ),
     );
   }
 }

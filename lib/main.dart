@@ -4,10 +4,17 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hafzny/features/auth/forget_password/data/view_model/bloc/forget_password_bloc.dart';
 import 'package:hafzny/features/auth/login/data/view_model/bloc/login_bloc.dart';
+import 'package:hafzny/features/auth/login/presentation/screens/login_screen.dart';
 import 'package:hafzny/features/auth/new_password/data/view_model/bloc/new_password_bloc.dart';
 import 'package:hafzny/features/auth/otp/data/view_model/bloc/otp_bloc.dart';
+import 'package:hafzny/features/auth/otp/presentation/screens/otp_screen.dart';
 import 'package:hafzny/features/auth/register/data/view_model/bloc/sign_up_bloc.dart';
+import 'package:hafzny/features/auth/register/presentation/screens/sign_up_screen.dart';
+import 'package:hafzny/features/home/data/view_model/cubit/home_cubit.dart';
 import 'package:hafzny/features/nav_bar/custom_navigation_bar.dart';
+import 'package:hafzny/features/on_boarding/view/screens/on_boarding_screen.dart';
+import 'package:hafzny/features/profile/data/view_model/bloc/profile_bloc.dart';
+import 'package:hafzny/features/splash/view/splash_screen.dart';
 import 'package:hafzny/handlers/localization.dart';
 import 'package:hafzny/handlers/shared_handler.dart';
 import 'package:hafzny/network/web_services.dart';
@@ -50,6 +57,12 @@ class MyApp extends StatelessWidget {
         BlocProvider<NewPasswordBloc>(
           create: (context) => NewPasswordBloc(),
         ),
+        BlocProvider<ProfileBloc>(
+          create: (context) => ProfileBloc(),
+        ),
+        BlocProvider<HomeCubit>(
+          create: (context) => HomeCubit()..getImageSlider(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -68,8 +81,7 @@ class MyApp extends StatelessWidget {
         ],
         supportedLocales: const [Locale("ar")],
         locale: const Locale("ar"),
-
-        home: const CustomNavigationBar(),
+        home: const SplashScreen(),
       ),
     );
   }

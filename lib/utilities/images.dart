@@ -27,8 +27,15 @@ class ImagesHelper {
   static const privacyPolicyIcon = 'assets/svg/privacy_policy_icon.svg';
   static const planIcon = 'assets/svg/plan_icon.svg';
   static const notificationIcon = 'assets/svg/notification_icon.svg';
+  static const ageGroupIcon = 'assets/svg/age_group_icon.svg';
+  static const favoriteIcon = 'assets/svg/favorite_icon.svg';
+  static const exitIcon = 'assets/svg/exit_icon.svg';
+  static const callIcon = 'assets/svg/call_icon.svg';
+  static const sessionDateIcon = 'assets/svg/session_date_icon.svg';
   static const profile = 'assets/svg/profile.svg';
   static const visiblePassword = 'assets/svg/visible_password.svg';
   static const invisiblePassword = 'assets/svg/invisible_password.svg';
   static const logoutIcon = 'assets/svg/logout_icon.svg';
+  static const editFieldIcon = 'assets/svg/edit_field_icon.svg';
+  static const uploadImageIcon = 'assets/svg/upload_image_icon.svg';
 }

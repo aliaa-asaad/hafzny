@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hafzny/handlers/shared_handler.dart';
 import 'package:hafzny/routing/navigator.dart';
 import 'package:hafzny/routing/routes.dart';
@@ -16,7 +15,8 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen>   with SingleTickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> animation;
   @override
@@ -30,7 +30,8 @@ class _SplashScreenState extends State<SplashScreen>   with SingleTickerProvider
   void splashAnimation() {
     controller =
         AnimationController(vsync: this, duration: const Duration(seconds: 3))
-          ..forward()..repeat();
+          ..forward()
+          ..repeat();
     animation = CurvedAnimation(parent: controller, curve: Curves.linear);
   }
 
@@ -39,50 +40,43 @@ class _SplashScreenState extends State<SplashScreen>   with SingleTickerProvider
     controller.dispose();
     super.dispose();
   }
- 
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
         future: Future.delayed(const Duration(seconds: 3), () async {
-       /*    AppRoutes.pushNamedNavigator(
-                routeName: Routes.onboarding, replacement: true); */
- AppRoutes.pushNamedNavigator(routeName: Routes.login,replacement: true);
-         /*  if (SharedHandler.instance!.getData(
+          
+          if (SharedHandler.instance!.getData(
               key: SharedKeys().isNotFirstTime, valueType: ValueType.bool)) {
+            //remember to delete this line
+           // SharedHandler.instance!.setData(SharedKeys().isLogin, value: false);
             log('isFirstTime=false');
             if (SharedHandler.instance!.getData(
                 key: SharedKeys().isLogin, valueType: ValueType.bool)) {
-              SharedHandler.instance!.getData(
-                          key: SharedKeys().userType,
-                          valueType: ValueType.int) ==
-                      0
-                  ? AppRoutes.pushNamedNavigator(
-                      routeName: Routes.clientNavBar, replacement: true)
-                  : AppRoutes.pushNamedNavigator(
-                      routeName: Routes.driverNavBar, replacement: true);
+              AppRoutes.pushNamedNavigator(
+                  routeName: Routes.navBar, replacement: true);
             } else {
               AppRoutes.pushNamedNavigator(
-                  routeName: Routes.check, replacement: true);
+                  routeName: Routes.onboarding,
+                  replacement: true,
+                  arguments: 2);
             }
-           
           } else {
-             AppRoutes.pushNamedNavigator(
-                routeName: Routes.onboarding, replacement: true);
-          } */
+            AppRoutes.pushNamedNavigator(
+                routeName: Routes.onboarding, replacement: true, arguments: 0);
+          }
         }),
         builder: (context, snapshot) {
           return Scaffold(
-          //  backgroundColor: Colors.green,
-            body:Center(
-                child: Lottie.asset(
-                  ImagesHelper.logo,
-               //   fit: BoxFit.contain,color: Colors.white,
+            //  backgroundColor: Colors.green,
+            body: Center(
+              child: Lottie.asset(ImagesHelper.logo,
+                  //   fit: BoxFit.contain,color: Colors.white,
                   height: MediaQueryHelper.height * .6,
-                  width: MediaQueryHelper.width * .8,animate: true,
-                  controller: controller
-                ),
-              ),
+                  width: MediaQueryHelper.width * .8,
+                  animate: true,
+                  controller: controller),
+            ),
             /*  FadeTransition(
               opacity: animation,
               child: 

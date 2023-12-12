@@ -5,14 +5,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SharedKeys {
   String isLogin = "IS_LOGIN";
 
-  String user = "USER";
+  String student = "STUDENT";
   String token = "TOKEN";
   String rememberMe = "REMEMBER_ME";
   String lang = "LANG";
   String theme = "THEME";
   String isNotFirstTime = "Is_NOT_FIRST_TIME";
-String driver='DRIVER';
+  String teacher = 'TEACHER';
   String userType = "USER_TYPE";
+  String teacherAge = "TEACHER_AGE";
 }
 
 enum ValueType { int, string, bool, double, map }
@@ -60,7 +61,7 @@ class SharedHandler {
         return _sharedPreferences.getBool(key) ?? false;
       case ValueType.map:
         String? value = _sharedPreferences.getString(key);
-        Map<String,dynamic> data = value != null ? jsonDecode(value) : {};
+        Map<String, dynamic> data = value != null ? jsonDecode(value) : {};
         return data;
       default:
         return "";

@@ -8,6 +8,7 @@ import 'package:hafzny/app_widgets/custom_button.dart';
 import 'package:hafzny/app_widgets/custom_form_field.dart';
 import 'package:hafzny/core/validations.dart';
 import 'package:hafzny/features/auth/forget_password/data/view_model/bloc/forget_password_bloc.dart';
+import 'package:hafzny/features/auth/otp/data/view_model/bloc/otp_bloc.dart';
 import 'package:hafzny/routing/navigator.dart';
 import 'package:hafzny/routing/routes.dart';
 import 'package:hafzny/utilities/images.dart';
@@ -23,7 +24,7 @@ class ForgetPasswordScreen extends StatefulWidget {
 
 class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
     with Validations {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +46,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
           child: Padding(
         padding: EdgeInsets.all(24.0.r),
         child: Form(
-          key: _formKey,
+          key: ForgetPasswordBloc.instance. formKey,
           autovalidateMode: AutovalidateMode.always,
           child: InkWell(
             onTap: () {
@@ -82,14 +83,15 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
                             ? MediaQueryHelper.width * .13
                             : MediaQueryHelper.width,
                         onPressed: () {
-                          if (_formKey.currentState!.validate()) {
+                          if (ForgetPasswordBloc.instance.formKey.currentState!.validate()) {
                             log('valid');
-                            AppRoutes.pushNamedNavigator(
-                                routeName: Routes.newPassword);
+                            ForgetPasswordBloc.instance.add(ForgetPasswordPost());
+                           /*  AppRoutes.pushNamedNavigator(
+                                routeName: Routes.newPassword); */
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('تم ارسال الكود')),
                             );
-                            //    ForgetPasswordBloc.instance.add(ForgetPasswordPost());
+                                
                           } else {
                             log('not valid');
                           }

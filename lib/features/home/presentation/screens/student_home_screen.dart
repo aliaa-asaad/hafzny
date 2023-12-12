@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hafzny/app_widgets/custom_app_bar.dart';
+import 'package:hafzny/app_widgets/teacher_rate.dart';
 import 'package:hafzny/features/home/presentation/widgets/custom_package.dart';
 import 'package:hafzny/features/home/presentation/widgets/custom_slider.dart';
 import 'package:hafzny/utilities/images.dart';
@@ -72,19 +73,7 @@ class StudentHomeScreen extends StatelessWidget {
                                 'محمد ابراهيم احمد ',
                                 style: TextStyleHelper.caption11,
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SvgPicture.asset(ImagesHelper.starIcon),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text(
-                                    '4.5',
-                                    style: TextStyleHelper.caption11,
-                                  ),
-                                ],
-                              )
+                              TeacherRate()
                             ],
                           ),
                         ),),
@@ -96,3 +85,4 @@ class StudentHomeScreen extends StatelessWidget {
     );
   }
 }
+

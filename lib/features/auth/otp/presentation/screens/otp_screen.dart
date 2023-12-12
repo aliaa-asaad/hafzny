@@ -102,8 +102,7 @@ class _OTPScreenState extends State<OTPScreen> with Validations {
                             if (OTPBloc.instance.formKey.currentState!
                                 .validate()) {
                               log('valid');
-                              log('log ${OTPBloc.instance.codeController1}');
-                              log('log ${OTPBloc.instance.codeController1.text}');
+                             
                               //  log('log ${OTPBloc.instance.emailController}');
                               log([
                                 OTPBloc.instance.codeController1.text,
@@ -118,8 +117,8 @@ class _OTPScreenState extends State<OTPScreen> with Validations {
                                     content: Text('تم حفظ البيانات')),
                                     
                               );
-                              AppRoutes.pushNamedNavigator(routeName: Routes.home);
-                             // OTPBloc.instance.add(OTPPost());
+                              
+                              OTPBloc.instance.add(OTPPost());
                             } else {
                               log('not valid');
                             }

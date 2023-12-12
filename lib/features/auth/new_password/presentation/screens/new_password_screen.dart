@@ -111,7 +111,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> with Validations 
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('تم حفظ البيانات')),
                             );
-                            //  NewPasswordBloc.instance.add(NewPasswordPost());
+                              NewPasswordBloc.instance.add(NewPasswordPost());
                           } else {
                             log('not valid');
                           }
@@ -128,6 +128,15 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> with Validations 
                                 ),
                               ), /*  textColor: textColor */
                       ),
+                      SizedBox(
+                          height: MediaQueryHelper.height * .02,
+                        ),
+                        state is NewPasswordError
+                            ? Text(
+                                'هناك خطا في البيانات',
+                                style: TextStyleHelper.button16,
+                              )
+                            : const SizedBox()
                     ],
                   );
                 },

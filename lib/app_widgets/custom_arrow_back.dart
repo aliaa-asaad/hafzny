@@ -7,16 +7,18 @@ import 'package:hafzny/utilities/media_quary.dart';
 class CustomArrowBack extends StatelessWidget {
   final bool isAuth;
   const CustomArrowBack({
-    super.key,  this.isAuth=false,
+    super.key,
+    this.isAuth = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:isAuth? EdgeInsets.only(right: 20.0.r):EdgeInsets.zero,
+      padding: EdgeInsets.only(right: 20.0.r) /* :EdgeInsets.zero */,
       child: Ink(
         decoration: BoxDecoration(
-            color: Color(0xff50617D).withOpacity(.1), shape: BoxShape.circle),
+            color: const Color(0xff50617D).withOpacity(.1),
+            shape: BoxShape.circle),
         child: IconButton(
           padding: EdgeInsets.zero,
           onPressed: () {

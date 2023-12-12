@@ -9,6 +9,13 @@ mixin Validations {
     return null;
   }
 
+  String? isValidAge(String? content) {
+    if (content!.isEmpty) {
+      return "الرجاء ادخال العمو بشكل صحيح";
+    } else if (int.parse(content) < 18) {return "العمر لا يجب ان يكون اقل من 18";}
+    return null;
+  }
+
   String? isValidContent(String? content) {
     if (content!.isEmpty) {
       return "الرجاء ادخال البيانات بشكل صحيح";

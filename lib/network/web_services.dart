@@ -168,5 +168,60 @@ class Network {
       rethrow;
     }
   }
+
+Future<dynamic> patch(
+      {required String? url,
+      Map<String, dynamic>? body,
+      bool isImageBody = false,
+      FormData? imageBody,
+      Map<String, dynamic>? query,
+      bool withToken = true,
+      Map<String, dynamic>? headers}) async {
+    try {
+      String token = '';
+      Response res;
+      if (headers != null) {
+        _dio.options.headers = headers;
+      } else if (withToken) {
+        token = await SharedHandler.instance!
+            .getData(key: SharedKeys().token, valueType: ValueType.string);
+        log("Post -> url: $url");
+        log('Post -> body:$body');
+        log('token: $token');
+        _dio.options.headers = {
+          'authorization': 'Bearer $token',
+          'Accept': 'application/json',
+        };
+      }
+
+      res = await _dio.patch(url!,
+          data: isImageBody ? imageBody : body,
+          queryParameters: query,
+          options: Options(headers: _dio.options.headers));
+      if (res.statusCode! >= 200 || res.statusCode! < 300) {
+        return res;
+      } else {
+        throw Exception("Error");
+      }
+    } on DioException catch (e) {
+      log('status: ${e.response!.statusMessage}');
+      log('statusCode: ${e.response!.statusCode}');
+      log('Dio exception: ${e.stackTrace}');
+      log('message: ${e.message}');
+      log('error: ${e.error.toString()}');
+      // log('token headers: ${e.response!.headers.value('Accept')}');
+      log('headers: ${e.response!.requestOptions.headers}');
+      log('headers map: ${e.response!.headers.map}');
+      log('headers token key: ${e.response!.headers.map.containsKey('authorization')}');
+      log('post body: ${e.response!.requestOptions.data.toString()}');
+      log('Dio exception: ${e.response!.data.toString()}');
+      rethrow;
+    } catch (e) {
+      log('catch: ${e.toString()}');
+
+      rethrow;
+    }
+  }
+
 }
 

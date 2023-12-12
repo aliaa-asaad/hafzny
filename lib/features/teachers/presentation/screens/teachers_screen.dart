@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hafzny/app_widgets/custom_app_bar.dart';
 import 'package:hafzny/app_widgets/custom_form_field.dart';
+import 'package:hafzny/app_widgets/custom_sized_button.dart';
 import 'package:hafzny/app_widgets/teacher_details_card.dart';
+import 'package:hafzny/routing/navigator.dart';
+import 'package:hafzny/routing/routes.dart';
+import 'package:hafzny/utilities/images.dart';
 import 'package:hafzny/utilities/text_style_helper.dart';
 
 class TeachersScreen extends StatelessWidget {
@@ -27,14 +32,10 @@ class TeachersScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(165, 48)),
-                    child: const Text(
-                      'كل المعلمين',
-                    ),
-                  ),
+                  CustomSizedButton(
+                      title: 'كل المعلمين',
+                      size: const Size(165, 48),
+                      onPressed: () {}),
                   ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
@@ -57,14 +58,32 @@ class TeachersScreen extends StatelessWidget {
                 height: 10,
               ),
               CustomFormField(
-                  isSearch: true,
+                  customSuffixIconButton: Padding(
+                    padding: EdgeInsets.all(12.0.r),
+                    child: SvgPicture.asset(
+                      ImagesHelper.filterIcon,
+                      // height: MediaQueryHelper.height * .02,
+                    ),
+                  ),
+                  customPreffixIconButton: Padding(
+                    padding: EdgeInsets.all(12.0.r),
+                    child: SvgPicture.asset(
+                      ImagesHelper.searchIcon,
+                      // height: MediaQueryHelper.height * .02,
+                    ),
+                  ),
+                  isLabeled: false,
+                  isWidget: true,
                   hintText: 'ابحث عن معلم',
                   keyboardType: TextInputType.text,
                   controller: controller),
               const SizedBox(
                 height: 10,
               ),
-              const TeacherDetailsCard()
+              TeacherDetailsCard(
+                onTap: () => AppRoutes.pushNamedNavigator(
+                    routeName: Routes.teacherDetails),
+              )
             ],
           ),
         ),

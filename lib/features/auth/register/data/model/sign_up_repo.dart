@@ -7,28 +7,30 @@ import 'package:hafzny/handlers/shared_handler.dart';
 import 'package:hafzny/network/web_services.dart';
 
 class SignUpRepo {
- /*  Future registerRequest(Map<String, dynamic> data) async {
+  Future registerRequest(Map<String, dynamic> data) async {
     try {
       Response res = await Network.instance!.post(
-          url: SharedHandler.instance!.getData(
+          url: 'http://venusdigital.ink:8080/student'/* SharedHandler.instance!.getData(
                       key: SharedKeys().userType, valueType: ValueType.int) ==
                   0
-              ? ApiNames.clientRegisterEndPoint
-              : ApiNames.driverRegisterEndPoint,
+              ? ApiNames.studentRegisterEndPoint
+              : ApiNames.teacherRegisterEndPoint */,
           withToken: false,
           body: data);
       log('res.data: ${res.data}');
       if (SharedHandler.instance!
               .getData(key: SharedKeys().userType, valueType: ValueType.int) ==
           0) {
-        return UserModel.fromJson(res.data);
+        return StudentModel.fromJson(res.data);
       } else {
         log('driver repo: ${res.data}');
-        log('driver model: ${DriverModel.fromJson(res.data)}');
-        return DriverModel.fromJson(res.data);
+        log('driver model: ${TeacherModel.fromJson(res.data)}');
+        return TeacherModel.fromJson(res.data);
       }
     } catch (e) {
       rethrow;
     }
-  } */
+  }
+
+
 }

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hafzny/core/user_model.dart';
 import 'package:hafzny/core/validations.dart';
 import 'package:hafzny/features/auth/login/data/model/login_repo.dart';
 import 'package:hafzny/handlers/shared_handler.dart';
@@ -24,8 +25,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with Validations {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   /////////////////models////////////////
   final LoginRepo _loginRepo = LoginRepo();
-  /* UserModel userModel = UserModel();
-  DriverModel driverModel = DriverModel(); */
+  bool isForgetPassword = false;
+  StudentModel studentModel = StudentModel();
+  TeacherModel teacherModel = TeacherModel();
 
 ////////////////////variables/////////////
   TextEditingController phoneNumberController = TextEditingController();
@@ -48,30 +50,36 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with Validations {
         Map<String, dynamic> data = {
           "phoneNumber": phoneNumberController.text,
           "password": passwordController.text,
-          "type": SharedHandler.instance!
-              .getData(key: SharedKeys().userType, valueType: ValueType.int)
+          /*  "type": SharedHandler.instance!
+              .getData(key: SharedKeys().userType, valueType: ValueType.int) */
         };
         log('login data: ${data.toString()}');
-       /*  if (SharedHandler.instance!.getData(
+        if (SharedHandler.instance!.getData(
                 key: SharedKeys().userType, valueType: ValueType.int) ==
             0) {
-          userModel = await _loginRepo.loginRequest(data);
+          studentModel = await _loginRepo.loginRequest(data);
           SharedHandler.instance!
-              .setData(SharedKeys().user, value: userModel.client!.toJson());
+              .setData(SharedKeys().student, value: studentModel.toJson());
           SharedHandler.instance!
-              .setData(SharedKeys().token, value: userModel.authToken);
-          log('client login token: ${userModel.authToken}');
-          log('userModel: ${userModel.toString()}');
+              .setData(SharedKeys().token, value: studentModel.token);
+          log('student login token: ${studentModel.token}');
+          log('student login isVerified: ${studentModel.data!.isVerified}');
+          log('student login name: ${studentModel.data!.name}');
+          log('student login email: ${studentModel.data!.email}');
+          log('student login id: ${studentModel.data!.iId}');
+          log('student login phoneNumber: ${studentModel.data!.phoneNumber}');
+
+          log('studentModel: ${studentModel.toJson()}');
         } else {
-          driverModel = await _loginRepo.loginRequest(data);
+          teacherModel = await _loginRepo.loginRequest(data);
           SharedHandler.instance!
-              .setData(SharedKeys().driver, value: driverModel.client!.toJson());
+              .setData(SharedKeys().teacher, value: teacherModel.toJson());
           SharedHandler.instance!
-              .setData(SharedKeys().token, value: driverModel.authToken);
-          log('driver login token: ${driverModel.authToken}');
-          log('driver login name: ${driverModel.client!.fullName}');
-          log('driver: ${driverModel.toString()}');
-        } */
+              .setData(SharedKeys().token, value: teacherModel.token);
+          log('teacher login token: ${teacherModel.token}');
+          // log('driver login name: ${teacherModel.fullName}');
+          log('teacher: ${teacherModel.toString()}');
+        }
 
         SharedHandler.instance!.setData(SharedKeys().isLogin, value: true);
         SharedHandler.instance!
@@ -79,29 +87,28 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with Validations {
         //SharedHandler.saveLoginData(_LoginModel);
         //SharedHandler.setData(_LoginModel);
         //log(' ${_loginModel.client!.accesxsToken!}');
-       
 
-       /*  if (SharedHandler.instance!.getData(
+        if (SharedHandler.instance!.getData(
                 key: SharedKeys().userType, valueType: ValueType.int) ==
             0) {
-          if (userModel.client!.isValid!) {
+          if (studentModel.data!.isVerified!) {
             AppRoutes.pushNamedNavigator(
-                routeName: Routes.clientNavBar, replacementAll: true);
+                routeName: Routes.navBar, replacementAll: true);
             clearData();
           } else {
             AppRoutes.pushNamedNavigator(
-                routeName: Routes.emailVerification, replacement: true);
+                routeName: Routes.otpScreen, replacement: true);
           }
         } else {
-          if (driverModel.client!.isValid!) {
+          if (teacherModel.data!.isVerified!) {
             AppRoutes.pushNamedNavigator(
-                routeName: Routes.driverNavBar, replacementAll: true);
+                routeName: Routes.navBar, replacementAll: true);
             clearData();
           } else {
             AppRoutes.pushNamedNavigator(
-                routeName: Routes.emailVerification, replacement: true);
+                routeName: Routes.otpScreen, replacement: true);
           }
-        } */
+        }
         emit(LoginLoaded());
       }
     } catch (e) {
